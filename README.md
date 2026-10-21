@@ -6,8 +6,9 @@ Migrates WordPress users whose `user_login` is an email address to unique, partl
 
 | Source | Pattern | Example |
 |--------|---------|---------|
-| CiviCRM Individual with first + last name | `{first initial}{first 3 of surname}{contact_id}` | Jack Freedman, contact 4821 → `jfre4821` |
-| Fallback (no usable Civi name) | `{email fragment}w{wp_user_id}` | `jack.freedman@…`, user 42 → `jfrew42` |
+| WP profile `first_name` + `last_name` (preferred, when both exist) | `{first initial}{first 3 of surname}{contact_id}` | Jack Freedman, contact 4821 → `jfre4821` |
+| CiviCRM Individual first + last name (fallback if WP names missing) | `{first initial}{first 3 of surname}{contact_id}` | Jack Freedman, contact 4821 → `jfre4821` |
+| Fallback (no usable WP or Civi name) | `{email fragment}w{wp_user_id}` | `jack.freedman@…`, user 42 → `jfrew42` |
 | New registration (no IDs yet) | `{name or email fragment}{4-char token}` | → `jfrex7k2` |
 
 Users whose `user_login` does **not** contain `@` are never touched.

@@ -368,7 +368,23 @@ class WP_Civi_Username_Migrator {
 		$source    = 'email';
 		$new_login = '';
 
-		if ( $civi_id && $this->civi->has_usable_name( $contact ) ) {
+		$wp_first_name = trim( (string) get_user_meta( $wp_id, 'first_name', true ) );
+		$wp_last_name  = trim( (string) get_user_meta( $wp_id, 'last_name', true ) );
+
+		if ( $civi_id && '' !== $wp_first_name && '' !== $wp_last_name ) {
+			$built = $this->generator->build_from_civi(
+				$wp_first_name,
+				$wp_last_name,
+				$civi_id,
+				$wp_id
+			);
+			if ( $built ) {
+				$new_login = $built;
+				$source    = 'civi';
+			}
+		}
+
+		if ( ! $new_login && $civi_id && $this->civi->has_usable_name( $contact ) ) {
 			$built = $this->generator->build_from_civi(
 				$contact['first_name'],
 				$contact['last_name'],
